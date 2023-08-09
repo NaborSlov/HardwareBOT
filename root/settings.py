@@ -130,3 +130,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 API_TOKEN = os.environ.get("API_TOKEN")
+PER_PAGE = os.environ.get("PER_PAGE")

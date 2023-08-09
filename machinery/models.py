@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class Industrial_unit(models.Model):
+class IndustrialUnit(models.Model):
     name = models.CharField(
         max_length=255, verbose_name=_("Название установки"), unique=True
     )
@@ -14,11 +14,15 @@ class Industrial_unit(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_model_name():
+        return "IndustrialUnit"
 
-class Machine_node(models.Model):
+
+class MachineNode(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Название узла"))
     industial_unit = models.ForeignKey(
-        "machinery.Industrial_unit",
+        "machinery.IndustrialUnit",
         verbose_name=_("Установка"),
         on_delete=models.CASCADE,
         related_name="industial_units",
@@ -36,11 +40,17 @@ class Machine_node(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_model_name():
+        return "MachineNode"
+
 
 class Hardware(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Название оборудования"))
+    name = models.CharField(
+        max_length=255, verbose_name=_("Название оборудования")
+    )
     machine_node = models.ForeignKey(
-        "machinery.Machine_node",
+        "machinery.MachineNode",
         verbose_name=_("Узел установки"),
         on_delete=models.CASCADE,
         related_name="machine_nodes",
@@ -58,6 +68,10 @@ class Hardware(models.Model):
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_model_name():
+        return "Hardware"
+
 
 class Element(models.Model):
     class Priority(models.IntegerChoices):
@@ -66,7 +80,9 @@ class Element(models.Model):
         RED = 3, _("Высокий")
 
     name = models.CharField(max_length=50, verbose_name=_("Имя элемента"))
-    description = models.TextField(verbose_name=_("Описание элемента"), blank=True)
+    description = models.TextField(
+        verbose_name=_("Описание элемента"), blank=True
+    )
     hardware = models.ForeignKey(
         "machinery.Hardware",
         verbose_name=_("оборудование"),
@@ -78,21 +94,31 @@ class Element(models.Model):
         verbose_name=_("Приоритет"),
         choices=Priority.choices,
     )
-    count_fact = models.IntegerField(verbose_name=_("Количество факт"), default=1)
-    count_need = models.IntegerField(verbose_name=_("Количество необходимо"), default=1)
+    count_fact = models.IntegerField(
+        verbose_name=_("Количество факт"), default=1
+    )
+    count_need = models.IntegerField(
+        verbose_name=_("Количество необходимо"), default=1
+    )
 
     class Meta:
         verbose_name = _("Элемент")
         verbose_name_plural = _("Элементы")
         constraints = [
-            models.UniqueConstraint(name="unical_element", fields=["name", "hardware"])
+            models.UniqueConstraint(
+                name="unical_element", fields=["name", "hardware"]
+            )
         ]
 
     def __str__(self):
         return self.name
 
+    @staticmethod
+    def get_model_name():
+        return "Element"
 
-class Vix_date(models.Model):
+
+class VixDate(models.Model):
     data_fix = models.DateTimeField(_("Дата ремонта"), auto_now_add=True)
     description = models.TextField(_("Описание ремонта"))
     element = models.ForeignKey(
@@ -107,4 +133,4 @@ class Vix_date(models.Model):
         verbose_name_plural = _("Даты ремонта")
 
     def __str__(self):
-        return self.name
+        return self.data_fix
