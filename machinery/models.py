@@ -14,10 +14,6 @@ class IndustrialUnit(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def get_model_name():
-        return "IndustrialUnit"
-
 
 class MachineNode(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Название узла"))
@@ -40,38 +36,6 @@ class MachineNode(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def get_model_name():
-        return "MachineNode"
-
-
-class Hardware(models.Model):
-    name = models.CharField(
-        max_length=255, verbose_name=_("Название оборудования")
-    )
-    machine_node = models.ForeignKey(
-        "machinery.MachineNode",
-        verbose_name=_("Узел установки"),
-        on_delete=models.CASCADE,
-        related_name="machine_nodes",
-    )
-
-    class Meta:
-        verbose_name = _("Оборудование")
-        verbose_name_plural = _("Оборудование")
-        constraints = [
-            models.UniqueConstraint(
-                name="unical_hardware", fields=["name", "machine_node"]
-            )
-        ]
-
-    def __str__(self):
-        return self.name
-
-    @staticmethod
-    def get_model_name():
-        return "Hardware"
-
 
 class Element(models.Model):
     class Priority(models.IntegerChoices):
@@ -84,10 +48,10 @@ class Element(models.Model):
         verbose_name=_("Описание элемента"), blank=True
     )
     hardware = models.ForeignKey(
-        "machinery.Hardware",
+        "machinery.MachineNode",
         verbose_name=_("оборудование"),
         on_delete=models.CASCADE,
-        related_name="hardwares",
+        related_name="machine_nodes",
     )
     priority = models.SmallIntegerField(
         default=Priority.GREEN,
@@ -99,6 +63,9 @@ class Element(models.Model):
     )
     count_need = models.IntegerField(
         verbose_name=_("Количество необходимо"), default=1
+    )
+    commute_hardware = models.CharField(
+        _("Коммутационное оборудование"), max_length=50
     )
 
     class Meta:
@@ -112,10 +79,6 @@ class Element(models.Model):
 
     def __str__(self):
         return self.name
-
-    @staticmethod
-    def get_model_name():
-        return "Element"
 
 
 class VixDate(models.Model):
