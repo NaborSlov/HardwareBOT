@@ -39,6 +39,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
+          cd app/
           sudo docker compose up --build -d
 
 
