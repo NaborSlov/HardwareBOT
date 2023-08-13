@@ -31,5 +31,14 @@ jobs:
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         source: "."
         target: app/
+    - name: run docker compose
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST_SSH }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
+        script: |
+          sudo docker compose up --build -d
 
 
