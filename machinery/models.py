@@ -10,6 +10,7 @@ class IndustrialUnit(models.Model):
     class Meta:
         verbose_name = _("Установка")
         verbose_name_plural = _("Установки")
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
@@ -32,6 +33,7 @@ class MachineNode(models.Model):
                 name="unical_mach_node", fields=["name", "industial_unit"]
             )
         ]
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
@@ -76,6 +78,7 @@ class Element(models.Model):
                 name="unical_element", fields=["name", "hardware"]
             )
         ]
+        ordering = ["id"]
 
     def __str__(self):
         return self.name
@@ -96,4 +99,4 @@ class VixDate(models.Model):
         verbose_name_plural = _("Даты ремонта")
 
     def __str__(self):
-        return self.data_fix
+        return self.element.__str__()

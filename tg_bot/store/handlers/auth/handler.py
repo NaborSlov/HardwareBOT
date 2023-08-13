@@ -34,8 +34,8 @@ def exit_bot(msg: Message, bot: TeleBot) -> None:
     bot.send_message(
         msg.chat.id,
         (
-            "Вы вышли из акаунта,\n"
-            "для новой авторизации воспльзуйтесь командой\n"
+            "Вы вышли из аккаунта,\n"
+            "для новой авторизации воспользуйтесь командой\n"
             "/login"
         ),
     )
@@ -69,21 +69,3 @@ def auth_password(msg: Message, bot: TeleBot) -> None:
             text="Вы авторизованны,\nвыберите чтение или создание",
             reply_markup=quest_after_auth,
         )
-
-
-def register_handler_auth(bot: TeleBot) -> None:
-    bot.register_message_handler(
-        start_login, commands=["login"], pass_bot=True
-    )
-    bot.register_message_handler(exit_bot, commands=["exit"], pass_bot=True)
-    bot.register_message_handler(
-        start_auth_user,
-        commands=["start"],
-        pass_bot=True,
-    )
-    bot.register_message_handler(
-        auth_login, state=StateAuth.login, pass_bot=True
-    )
-    bot.register_message_handler(
-        auth_password, state=StateAuth.password, pass_bot=True
-    )
