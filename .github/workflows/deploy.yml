@@ -17,6 +17,9 @@ jobs:
       DEBUG: ${{ vars.DEBUG }}
       API_TOKEN: ${{ secrets.API_TOKEN }}
       PER_PAGE: ${{ vars.PER_PAGE }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
     steps:
     - uses: actions/checkout@v3
     - name: build .env
