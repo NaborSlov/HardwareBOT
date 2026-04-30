@@ -60,6 +60,14 @@ def auth_password(msg: Message, bot: TeleBot) -> None:
             )
             return None
 
+        if not tg_user.check_password(msg.text):
+            bot.set_state(msg.from_user.id, StateAuth.login, msg.chat.id)
+            bot.send_message(
+                msg.chat.id,
+                "Неправильный логин или пароль.\nПопробуйте еще раз.",
+            )
+            return None
+
         tg_user.tg_login = msg.from_user.id
         tg_user.save()
 
